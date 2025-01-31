@@ -7,10 +7,10 @@ Membres :
 
 # Guide utilisateur
 Pour déployer la solution, rendez-vous dans le répertoire courant de votre Chart HELM et exécutez la commande suivante :
-``` helm install grp1 ````
+``` helm install grp1 ```
 
 Si vous vous effectuez des modifications, vous pouvez mettre à jour votre chart en utilisant :
-``` helm upgrade grp1 . ````
+``` helm upgrade grp1 . ```
 
 Pour stopper la chart HELM utilisez :
 ``` helm uninstall grp1 . ```
