@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mediawiki-deployment
+  name: {{ .Release.Name | trunc 4 }}-mediawiki-deployment
   labels:
     app: mediawiki
 {{ toYaml .Values.label | indent 4 }}
@@ -10,10 +10,12 @@ spec:
   selector:
     matchLabels:
       app: mediawiki
+{{ toYaml .Values.label | indent 6 }}
   template:
     metadata:
       labels:
         app: mediawiki
+{{ toYaml .Values.label | indent 8 }}
     spec:
       containers:
       - name: mediawiki
@@ -24,18 +26,15 @@ spec:
           allowPrivilegeEscalation: true
         env:
           - name: MEDIAWIKI_DB_NAME
-            value: mediawiki
+            value: {{ .Values.env.MEDIAWIKI_DB_NAME }}
           - name: MEDIAWIKI_DB_HOST
-            value: mysql
+            value: {{ .Values.env.MEDIAWIKI_DB_HOST }}
           - name: MEDIAWIKI_DB_PORT
-            value: "3600"
-          - name: MEDIAWIKI_DB_USER
-            valueFrom:
-              configMapKeyRef:
-                name: database     
-                key: user
-          - name: MEDIAWIKI_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-password
-                key: password
+            value: {{ .Values.env.MEDIAWIKI_DB_PORT }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.mediawiki.limits.cpu }}
+            memory: {{ .Values.resources.mediawiki.limits.memory }}
+          requests:
+            cpu: {{ .Values.resources.mediawiki.requests.cpu }}
+            memory: {{ .Values.resources.mediawiki.requests.memory }}

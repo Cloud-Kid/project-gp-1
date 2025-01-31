@@ -1,10 +1,46 @@
+# Fichier value
+
+# Définition image mediawiki
 mediawiki:
   image: harbor.kakor.ovh/public/mediawiki:latest
-  addtoto: true
 
+# Définition image mysql
 mysql:
   image: harbor.kakor.ovh/public/mysql:latest
+  password: "SuperSecurePassword123"
 
-label: 
-  toto: tata
-  toto2: tata2
+# Définition des labels
+label:
+  group: "groupe-1"
+  environment: "DEV"
+
+# Définition des varaibles d'environnement
+env:
+  MEDIAWIKI_DB_NAME: mediawiki
+  MEDIAWIKI_DB_HOST: mysql
+  MEDIAWIKI_DB_PORT: "3306"
+
+# Définition des ressources
+resources:
+  mediawiki:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+  mysql:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+# Définition de la valeur storage
+storage: true
+
+# Définition du partage NFS
+nfs:
+  server: 192.168.1.56
+  path: /Volume1/public/nfs-share-openshift/groupe-1

@@ -1,18 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: {{ .Release.Name | trunc 4 }}-mysql-deployment
   labels:
     app: mysql
+{{ toYaml .Values.label | indent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: mysql
+{{ toYaml .Values.label | indent 6 }}
+
   template:
     metadata:
       labels:
         app: mysql
+{{ toYaml .Values.label | indent 8 }}
     spec:
       containers:
       - name: mysql
@@ -20,21 +24,22 @@ spec:
         ports:
         - containerPort: 3306
         env:
-          - name: MYSQL_DATABASE
-            value: mediawiki
-          - name: MYSQL_USER
-            valueFrom:
-              configMapKeyRef:
-                name: database     
-                key: user
-          - name: MYSQL_PASSWORD
+          - name: MYSQL_ROOT_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mysql-password
-                key: password
-          - name: MYSQL_ROOT_PASSWORD
-            value: mediawikipassword
-          {{ if .Values.mediawiki.addtoto }}
-          - name: toto
-            value: tata
-          {{ end }}
+                name: {{ .Release.Name }}-mysql-secret
+                key: mysql-password
+        resources:
+          limits:
+            cpu: {{ .Values.resources.mysql.limits.cpu }}
+            memory: {{ .Values.resources.mysql.limits.memory }}
+          requests:
+            cpu: {{ .Values.resources.mysql.requests.cpu }}
+            memory: {{ .Values.resources.mysql.requests.memory }}
+        volumeMounts:
+        - mountPath: "/var/lib/mysql"
+          name: mysql-storage
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name | trunc 4 }}-mysql-pvc
