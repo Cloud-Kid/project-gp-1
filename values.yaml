@@ -11,7 +11,7 @@ mysql:
 
 # Définition des labels
 label:
-  group: "groupe-1"
+  group: "grp1"
   environment: "DEV"
 
 # Définition des varaibles d'environnement

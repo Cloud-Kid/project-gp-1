@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name | trunc 4 }}-mysql-pvc
 spec:
-  storageClassName: ""
+  storageClassName: {{ .Release.Name | trunc 4 }}-mysql-pvc
   volumeName: {{ .Release.Name | trunc 4 }}-mysql-pv
   accessModes:
     - ReadWriteOnce

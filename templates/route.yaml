@@ -1,7 +1,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: mediawiki-correction
+  name: {{ .Release.Name | trunc 4 }}-mediawiki-correction
 spec:
   host: {{ .Release.Name | trunc 4 }}-mediawiki-correction.apps.openshift.kakor.ovh
   port:
@@ -11,6 +11,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: mediawiki
+    name: {{ .Release.Name | trunc 4 }}-mediawiki
     weight: 100
   wildcardPolicy: None
