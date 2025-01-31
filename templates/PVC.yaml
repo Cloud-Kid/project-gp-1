@@ -1,0 +1,14 @@
+{{- if .Values.storage }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name | trunc 4 }}-mysql-pvc
+spec:
+  storageClassName: ""
+  volumeName: {{ .Release.Name | trunc 4 }}-mysql-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+{{- end }}
