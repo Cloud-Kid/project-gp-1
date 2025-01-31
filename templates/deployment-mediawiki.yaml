@@ -26,11 +26,11 @@ spec:
           allowPrivilegeEscalation: true
         env:
           - name: MEDIAWIKI_DB_NAME
-            value: {{ .Values.env.MEDIAWIKI_DB_NAME }}
+            value: {{ .Values.env.MEDIAWIKI_DB_NAME | quote }}
           - name: MEDIAWIKI_DB_HOST
-            value: {{ .Values.env.MEDIAWIKI_DB_HOST }}
+            value: {{ .Values.env.MEDIAWIKI_DB_HOST | quote }}
           - name: MEDIAWIKI_DB_PORT
-            value: {{ .Values.env.MEDIAWIKI_DB_PORT }}
+            value: {{ .Values.env.MEDIAWIKI_DB_PORT | quote }}
         resources:
           limits:
             cpu: {{ .Values.resources.mediawiki.limits.cpu }}
